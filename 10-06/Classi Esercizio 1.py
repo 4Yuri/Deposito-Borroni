@@ -23,3 +23,12 @@ class Punto:
     def distanza_da_origine(self):
         return math.sqrt(self.x**2 + self.y**2)
     
+mio_punto = Punto(3, 4)
+print("Coordinate iniziali: (" + str(mio_punto.x) + ", " + str(mio_punto.y) + ")")
+
+print("Distanza dall'origine: " + str(mio_punto.distanza_da_origine()))
+
+mio_punto.muovi(dx=2, dy=-1)
+print("\nNuove coordinate dopo lo spostamento: (" + str(mio_punto.x) + ", " + str(mio_punto.y) + ")")
+
+print("Nuova distanza dall'origine: " + str(mio_punto.distanza_da_origine()))
