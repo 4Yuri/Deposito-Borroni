@@ -75,16 +75,90 @@ class Negozio:
 
 class Cliente:
     def __init__(self, nome):
-        # Salvo il mio nome e creo una lista vuota
+        # Salvo il mio nome e creo una lista vuota perché devo tenere traccia in modo isolato di tutti gli acquisti che farò personalmente.
         self.nome = nome
         self.acquisti = []
 
     def compra(self, negozio, nome_articolo, quantita):
-        # Chiedo al negozio di processare l'acquisto e poi salvo la ricevuta nella mia lista perché voglio avere un mio storico personale delle spese sostenute
+        # Verifico se l'articolo esiste nel negozio perché non ha senso provare a comprare qualcosa che non è in vendita.
         if nome_articolo in negozio.inventario:
             articolo = negozio.inventario[nome_articolo]
             costo = articolo.prezzo * quantita
+            # Delego al negozio l'aggiornamento del magazzino e dei guadagni perché è lui il proprietario della merce.
+            negozio.acquista(nome_articolo, quantita, self.nome)
+            # Salvo i dettagli nella mia lista personale per avere una ricevuta storica delle mie spese.
+            self.acquisti.append((nome_articolo, quantita, costo))
+        else:
+            print("Mi dispiace, ma l'articolo non è disponibile nel negozio.")
 
     def stampa_acquisti(self):
-        # Scorro la mia lista personale per mostrare a schermo cosa ho comprato e quanto ho speso.
-        print("Acquisti di", self.nome)
+        # Scorro la mia lista personale perché voglio mostrare a schermo esattamente cosa ho comprato e quanto ho speso.
+        print("--- Acquisti di", self.nome, "---")
+        for a in self.acquisti:
+            print("Articolo:", a[0], "| Qta:", a[1], "| Spesa:", a[2])
+
+while True:
+    print("NEGOZIO")
+    print("1. Registrati")
+    print("2. Login")
+    print("3. Esci")
+    scelta = input("Cosa vuoi fare? ")
+
+    if scelta == "1":
+        registra_cliente()
+
+    elif scelta == "2":
+        ruolo, utente = login()
+        
+        if ruolo == "admin":
+            # Menu Amministratore
+            while True:
+                print("Menu Admin")
+                print("1. Aggiungi Articolo")
+                print("2. Rimuovi Articolo")
+                print("3. Vedi Inventario")
+                print("4. Rapporto Vendite")
+                print("5. Logout")
+                scelta_admin = input("Scelta: ")
+
+                if scelta_admin == "1":
+                    n = input("Nome articolo: ")
+                    p = float(input("Prezzo: "))
+                    q = int(input("Quantita: "))
+                    nuovo_art = Articolo(n, p, q)
+                    negozio.aggiungi_articolo(nuovo_art)
+                elif scelta_admin == "2":
+                    n = input("Nome articolo da rimuovere: ")
+                    negozio.rimuovi_articolo(n)
+                elif scelta_admin == "3":
+                    negozio.stampa_inventario()
+                elif scelta_admin == "4":
+                    negozio.rapporto_vendite()
+                elif scelta_admin == "5":
+                    break
+
+        elif ruolo == "cliente":
+            # Menu Cliente
+            cliente_attuale = Cliente(utente)
+            while True:
+                print(" Menu Cliente")
+                print("1. Vedi Inventario")
+                print("2. Compra Articolo")
+                print("3. I miei acquisti")
+                print("4. Logout")
+                scelta_cliente = input("Scelta: ")
+
+                if scelta_cliente == "1":
+                    negozio.stampa_inventario()
+                elif scelta_cliente == "2":
+                    n = input("Nome articolo da comprare: ")
+                    q = int(input("Quanti ne vuoi? "))
+                    cliente_attuale.compra(negozio, n, q)
+                elif scelta_cliente == "3":
+                    cliente_attuale.stampa_acquisti()
+                elif scelta_cliente == "4":
+                    break
+
+    elif scelta == "3":
+        print("Arrivederci!")
+        break
