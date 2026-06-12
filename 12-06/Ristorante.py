@@ -22,7 +22,7 @@ class Articolo:
 
     def stampa_info(self):
         # Mostro a schermo i miei dettagli
-        print("Prodotto:", self.nome, "| Prezzo:", self.prezzo, "| Quantita:", self.quantita)
+        print("Prodotto:", self.nome, "Prezzo:", self.prezzo, "Quantita:", self.quantita)
 
 
 class Negozio:
@@ -71,7 +71,7 @@ class Negozio:
         print("Rapporto Vendite")
         print("Guadagno Totale:", self.guadagno_totale)
         for vendita in self.storico_vendite:
-            print("Cliente:", vendita[0], "| Articolo:", vendita[1], "| Qta:", vendita[2], "| Ricavo:", vendita[3])
+            print("Cliente:", vendita[0], "Articolo:", vendita[1], "Qta:", vendita[2], "Ricavo:", vendita[3])
 
 class Cliente:
     def __init__(self, nome):
